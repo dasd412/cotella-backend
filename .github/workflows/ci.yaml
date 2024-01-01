@@ -21,3 +21,10 @@ jobs:
         run: mvn test jacoco:report
       - name: Verify Coverage
         run: mvn verify -Pcoverage
+
+      - name: Upload Jacoco Report
+        if: ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: target/site/jacoco # Maven 프로젝트의 JaCoCo 리포트 경로
