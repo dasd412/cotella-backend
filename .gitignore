@@ -120,3 +120,6 @@ bundles/
 vendor/pkg/
 pyenv
 Vagrantfile
+
+## etc
+.sql
