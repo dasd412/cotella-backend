@@ -96,8 +96,6 @@ atlassian-ide-plugin.xml
 
 cached-antora-playbook.yml
 
-#security
-cotella-firebase.json
 
 # properties
 application-local.properties
