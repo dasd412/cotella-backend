@@ -1,8 +1,6 @@
 package com.api.cotella.auth.config;
 
 import com.api.cotella.auth.InterviewUserDetailsService;
-import com.api.cotella.auth.filter.JwtFilter;
-import com.google.firebase.auth.FirebaseAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +11,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -22,11 +19,8 @@ public class SecurityConfig {
 
   private final InterviewUserDetailsService userDetailsService;
 
-  private final FirebaseAuth firebaseAuth;
-
-  public SecurityConfig(InterviewUserDetailsService userDetailsService, FirebaseAuth firebaseAuth) {
+  public SecurityConfig(InterviewUserDetailsService userDetailsService) {
     this.userDetailsService = userDetailsService;
-    this.firebaseAuth = firebaseAuth;
   }
 
   @Bean
@@ -35,8 +29,8 @@ public class SecurityConfig {
         .authorizeHttpRequests(authorize -> authorize
             .anyRequest().authenticated()
         )
-        .addFilterBefore(new JwtFilter(userDetailsService, firebaseAuth),
-            UsernamePasswordAuthenticationFilter.class)
+//        .addFilterBefore(new JwtFilter(userDetailsService),
+//            UsernamePasswordAuthenticationFilter.class)
         .exceptionHandling(e -> e
             .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
         );
