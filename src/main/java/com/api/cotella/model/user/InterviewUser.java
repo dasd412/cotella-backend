@@ -1,6 +1,7 @@
 package com.api.cotella.model.user;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.api.cotella.common.util.EmailChecker;
 import jakarta.persistence.Column;
@@ -8,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,7 +18,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Getter
-public class User {
+@Table(name="interview_user")
+public class InterviewUser {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,11 +41,13 @@ public class User {
   private String providerId;
 
 
-  public User() {
+  public InterviewUser() {
   }
 
   @Builder
-  public User(String name, String email, String password, String provider, String providerId) {
+  public InterviewUser(String name, String email, String password, String provider, String providerId) {
+    checkNotNull(name,"name must not be null");
+    checkNotNull(email,"email must not be null");
     checkArgument(!name.isEmpty() && name.length() <= 50, "name should be between 1 and 50");
     checkArgument(EmailChecker.checkEmail(email), "String must be format of email.");
     this.name = name;
@@ -53,11 +58,13 @@ public class User {
   }
 
   public void modifyName(String name) {
+    checkNotNull(name,"name must not be null");
     checkArgument(!name.isEmpty() && name.length() <= 50, "name should be between 1 and 50");
     this.name = name;
   }
 
   public void modifyEmail(String email) {
+    checkNotNull(email,"email must not be null");
     checkArgument(EmailChecker.checkEmail(email), "String must be format of email.");
     this.email = email;
   }
@@ -75,7 +82,7 @@ public class User {
     if (obj == null || getClass() != obj.getClass()) {
       return false;
     }
-    User target = (User) obj;
+    InterviewUser target = (InterviewUser) obj;
     return Objects.equals(this.id, target.id);
   }
 
