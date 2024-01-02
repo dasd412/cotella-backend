@@ -21,7 +21,19 @@ public class InterviewUserDetailsService implements UserDetailsService {
   @Override
   @Transactional(readOnly = true)
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    InterviewUser user=interviewUserRepository.findInterviewUserByName(username).orElseThrow(() -> new UsernameNotFoundException("username not found"));
+    InterviewUser user = interviewUserRepository.findInterviewUserByName(username)
+        .orElseThrow(() -> new UsernameNotFoundException("username not found"));
     return new PrincipalDetails(user);
+  }
+
+  @Transactional
+  public InterviewUser register(String uid, String email) {
+    InterviewUser interviewUser = InterviewUser.builder()
+        .name(uid)
+        .email(email)
+        .build();
+
+    interviewUserRepository.save(interviewUser);
+    return interviewUser;
   }
 }
