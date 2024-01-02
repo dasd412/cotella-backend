@@ -1,6 +1,6 @@
 package com.api.cotella.model.user;
 
-import com.api.cotella.common.config.JpaConfig;
+import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.repository.user.InterviewUserRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-@Import({JpaConfig.class})
+@Import({JpaTestConfiguration.class})
 @TestPropertySource(locations = "/application-test.properties")
 class InterviewUserTest {
 
