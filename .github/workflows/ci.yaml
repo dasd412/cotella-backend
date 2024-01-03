@@ -23,7 +23,6 @@ jobs:
         run: mvn verify -Pcoverage
 
       - name: Upload Jacoco Report
-        if: ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
           name: jacoco-report
