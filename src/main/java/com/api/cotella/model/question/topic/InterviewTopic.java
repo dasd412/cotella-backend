@@ -1,4 +1,4 @@
-package com.api.cotella.model.question;
+package com.api.cotella.model.question.topic;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

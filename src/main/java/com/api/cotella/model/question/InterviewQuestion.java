@@ -1,5 +1,6 @@
 package com.api.cotella.model.question;
 
+import com.api.cotella.model.question.keyword.InterviewKeyword;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

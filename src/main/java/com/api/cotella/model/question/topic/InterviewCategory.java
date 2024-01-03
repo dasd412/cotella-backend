@@ -1,4 +1,4 @@
-package com.api.cotella.model.question;
+package com.api.cotella.model.question.topic;
 
 import lombok.Getter;
 

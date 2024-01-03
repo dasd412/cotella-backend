@@ -1,5 +1,6 @@
-package com.api.cotella.model.question;
+package com.api.cotella.model.question.keyword;
 
+import com.api.cotella.model.question.topic.InterviewTopic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
