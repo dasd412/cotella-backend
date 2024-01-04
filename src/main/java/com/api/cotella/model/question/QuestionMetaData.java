@@ -1,5 +1,6 @@
 package com.api.cotella.model.question;
 
+import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,10 +13,10 @@ import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "question_meta_data")
-public class QuestionMetaData {
+public class QuestionMetaData extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,6 +41,7 @@ public class QuestionMetaData {
     this.objectives = objectives;
     this.interviewQuestion = interviewQuestion;
   }
+
   @Override
   public int hashCode() {
     return Objects.hash(id);

@@ -1,5 +1,6 @@
 package com.api.cotella.model.question;
 
+import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.question.keyword.InterviewKeyword;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -13,10 +14,10 @@ import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "interview_question")
-public class InterviewQuestion {
+public class InterviewQuestion extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,13 +30,13 @@ public class InterviewQuestion {
   @JoinColumn(name = "interview_keyword_id")
   private InterviewKeyword interviewKeyword;
 
-  public InterviewQuestion(){
+  public InterviewQuestion() {
   }
 
   @Builder
-  public InterviewQuestion(String questionContent, InterviewKeyword interviewKeyword){
-    this.questionContent=questionContent;
-    this.interviewKeyword=interviewKeyword;
+  public InterviewQuestion(String questionContent, InterviewKeyword interviewKeyword) {
+    this.questionContent = questionContent;
+    this.interviewKeyword = interviewKeyword;
   }
 
   @Override

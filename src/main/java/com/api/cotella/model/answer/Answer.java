@@ -1,5 +1,6 @@
 package com.api.cotella.model.answer;
 
+import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.session.InterviewSession;
 import jakarta.persistence.Column;
@@ -14,10 +15,10 @@ import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
 
-@Entity
 @Getter
+@Entity
 @Table(name = "answer")
-public class Answer {
+public class Answer extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
