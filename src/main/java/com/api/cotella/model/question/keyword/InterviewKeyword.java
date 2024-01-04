@@ -1,5 +1,7 @@
 package com.api.cotella.model.question.keyword;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.question.topic.InterviewTopic;
 import jakarta.persistence.Column;
@@ -15,6 +17,9 @@ import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 @Getter
 @Entity
 @Table(name = "interview_keyword")
@@ -26,6 +31,7 @@ public class InterviewKeyword extends BaseTimeEntity {
   private Integer id;
 
   @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
   private InterviewKeywordContent keywordContent;
 
   @ManyToOne
@@ -38,6 +44,7 @@ public class InterviewKeyword extends BaseTimeEntity {
   @Builder
   public InterviewKeyword(InterviewKeywordContent interviewKeywordContent,
       InterviewTopic interviewTopic) {
+    checkNotNull(interviewKeywordContent);
     this.keywordContent = interviewKeywordContent;
     this.interviewTopic = interviewTopic;
   }
@@ -57,5 +64,13 @@ public class InterviewKeyword extends BaseTimeEntity {
     }
     InterviewKeyword target = (InterviewKeyword) obj;
     return Objects.equals(this.id, target.id);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", id)
+        .append("keywordContent", keywordContent)
+        .toString();
   }
 }

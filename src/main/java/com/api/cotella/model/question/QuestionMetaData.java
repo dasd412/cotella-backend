@@ -7,11 +7,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Entity
@@ -23,8 +26,10 @@ public class QuestionMetaData extends BaseTimeEntity {
   @Column(name = "question_meta_data_id")
   private Integer id;
 
+  @Lob
   private String modelAnswerContent;
 
+  @Lob
   private String objectives;
 
   @ManyToOne
@@ -57,5 +62,14 @@ public class QuestionMetaData extends BaseTimeEntity {
     }
     QuestionMetaData target = (QuestionMetaData) obj;
     return Objects.equals(this.id, target.id);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", id)
+        .append("modelAnswerContent", modelAnswerContent)
+        .append("objectives", objectives)
+        .toString();
   }
 }

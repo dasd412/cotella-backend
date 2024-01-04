@@ -1,5 +1,7 @@
 package com.api.cotella.model.question.topic;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Entity
@@ -29,6 +33,7 @@ public class InterviewTopic extends BaseTimeEntity {
   }
 
   public InterviewTopic(InterviewCategory interviewCategory) {
+    checkNotNull(interviewCategory);
     this.interviewCategory = interviewCategory;
   }
 
@@ -47,5 +52,13 @@ public class InterviewTopic extends BaseTimeEntity {
     }
     InterviewTopic target = (InterviewTopic) obj;
     return Objects.equals(this.id, target.id);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", id)
+        .append("interviewCategory", interviewCategory)
+        .toString();
   }
 }

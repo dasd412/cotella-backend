@@ -1,5 +1,7 @@
 package com.api.cotella.model.answer;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.session.InterviewSession;
@@ -9,11 +11,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Entity
@@ -25,10 +30,14 @@ public class Answer extends BaseTimeEntity {
   @Column(name = "answer_id")
   private Integer id;
 
+  @Lob
+  @Column(name = "answer_content")
   private String answerContent;
 
+  @Column(name = "likes_count", nullable = false, columnDefinition = "int default 0")
   private int likesCount;
 
+  @Column(name = "dislikes_count", nullable = false, columnDefinition = "int default 0")
   private int dislikesCount;
 
   @ManyToOne
@@ -45,6 +54,8 @@ public class Answer extends BaseTimeEntity {
   @Builder
   public Answer(String answerContent, int likesCount, int dislikesCount,
       InterviewQuestion interviewQuestion, InterviewSession interviewSession) {
+    checkArgument(likesCount >= 0, "likesCount must be positive or zero.");
+    checkArgument(dislikesCount >= 0, "dislikesCount must be positive or zero.");
     this.answerContent = answerContent;
     this.likesCount = likesCount;
     this.dislikesCount = dislikesCount;
@@ -67,5 +78,15 @@ public class Answer extends BaseTimeEntity {
     }
     Answer target = (Answer) obj;
     return Objects.equals(this.id, target.id);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", id)
+        .append("answerContent", answerContent)
+        .append("likesCount", likesCount)
+        .append("dislikesCount", dislikesCount)
+        .toString();
   }
 }

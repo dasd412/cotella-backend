@@ -1,5 +1,7 @@
 package com.api.cotella.model.llm;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import com.api.cotella.model.answer.Answer;
 import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
@@ -8,11 +10,14 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Objects;
 import lombok.Builder;
 import lombok.Getter;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Entity
@@ -24,6 +29,8 @@ public class FitInterviewAnswerEditing extends BaseTimeEntity {
   @Column(name = "fit_interview_answer_editing_id")
   private Integer id;
 
+  @Lob
+  @Column(nullable = false)
   private String content;
 
   @ManyToOne
@@ -35,6 +42,7 @@ public class FitInterviewAnswerEditing extends BaseTimeEntity {
 
   @Builder
   public FitInterviewAnswerEditing(String content, Answer answer) {
+    checkNotNull(content);
     this.content = content;
     this.answer = answer;
   }
@@ -54,5 +62,13 @@ public class FitInterviewAnswerEditing extends BaseTimeEntity {
     }
     FitInterviewAnswerEditing target = (FitInterviewAnswerEditing) obj;
     return Objects.equals(this.id, target.id);
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+        .append("id", id)
+        .append("content", content)
+        .toString();
   }
 }
