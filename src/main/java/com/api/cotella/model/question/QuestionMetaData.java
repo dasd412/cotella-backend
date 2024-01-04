@@ -21,7 +21,7 @@ public class QuestionMetaData extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "question_meta_data_id")
-  private Long id;
+  private Integer id;
 
   private String modelAnswerContent;
 

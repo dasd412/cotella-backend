@@ -22,7 +22,7 @@ public class RelatedQuestionLLM extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "related_question_llm_id")
-  private Long id;
+  private Integer id;
 
   private String content;
 

@@ -21,7 +21,7 @@ public class InterviewSession extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "interview_session_id")
-  private Long id;
+  private Integer id;
 
   @ManyToOne
   @JoinColumn(name = "interview_user_id")

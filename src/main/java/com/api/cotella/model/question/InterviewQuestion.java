@@ -22,7 +22,7 @@ public class InterviewQuestion extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "interview_question_id")
-  private Long id;
+  private Integer id;
 
   private String questionContent;
 

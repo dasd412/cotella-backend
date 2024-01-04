@@ -23,7 +23,7 @@ public class InterviewKeyword extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "interview_keyword_id")
-  private Long id;
+  private Integer id;
 
   @Enumerated(EnumType.STRING)
   private InterviewKeywordContent keywordContent;

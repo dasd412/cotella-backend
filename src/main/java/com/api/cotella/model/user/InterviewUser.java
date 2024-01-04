@@ -25,7 +25,7 @@ public class InterviewUser extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "interview_user_id")
-  private Long id;
+  private Integer id;
 
   @Column(nullable = false, unique = true)
   private String name;

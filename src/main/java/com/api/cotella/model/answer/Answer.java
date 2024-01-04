@@ -23,7 +23,7 @@ public class Answer extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "answer_id")
-  private Long id;
+  private Integer id;
 
   private String answerContent;
 

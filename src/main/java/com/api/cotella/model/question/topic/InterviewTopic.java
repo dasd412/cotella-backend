@@ -20,7 +20,7 @@ public class InterviewTopic extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "interview_topic_id")
-  private Long id;
+  private Integer id;
 
   @Enumerated(EnumType.STRING)
   private InterviewCategory interviewCategory;

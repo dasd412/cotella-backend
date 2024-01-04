@@ -22,7 +22,7 @@ public class FitInterviewAnswerEditing extends BaseTimeEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "fit_interview_answer_editing_id")
-  private Long id;
+  private Integer id;
 
   private String content;
 
