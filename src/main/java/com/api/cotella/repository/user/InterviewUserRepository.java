@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InterviewUserRepository extends JpaRepository<InterviewUser,Long>,InterviewUserRepositoryCustom {
+public interface InterviewUserRepository extends JpaRepository<InterviewUser,Integer>,InterviewUserRepositoryCustom {
 
 }
