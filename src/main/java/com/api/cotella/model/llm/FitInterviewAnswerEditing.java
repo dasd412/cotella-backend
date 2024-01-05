@@ -6,6 +6,7 @@ import com.api.cotella.model.answer.Answer;
 import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +34,7 @@ public class FitInterviewAnswerEditing extends BaseTimeEntity {
   @Column(nullable = false)
   private String content;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "answer_id")
   private Answer answer;
 

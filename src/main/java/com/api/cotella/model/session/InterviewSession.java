@@ -4,6 +4,7 @@ import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.user.InterviewUser;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +24,7 @@ public class InterviewSession extends BaseTimeEntity {
   @Column(name = "interview_session_id")
   private Integer id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "interview_user_id")
   private InterviewUser interviewUser;
 

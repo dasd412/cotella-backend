@@ -3,6 +3,7 @@ package com.api.cotella.model.question;
 import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,7 +33,7 @@ public class QuestionMetaData extends BaseTimeEntity {
   @Lob
   private String objectives;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "interview_question_id")
   private InterviewQuestion interviewQuestion;
 

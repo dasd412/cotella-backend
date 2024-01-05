@@ -6,6 +6,7 @@ import com.api.cotella.model.common.BaseTimeEntity;
 import com.api.cotella.model.question.InterviewQuestion;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,7 +34,7 @@ public class RelatedQuestionLLM extends BaseTimeEntity {
   @Column(nullable = false)
   private String content;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "interview_question_id")
   private InterviewQuestion interviewQuestion;
 

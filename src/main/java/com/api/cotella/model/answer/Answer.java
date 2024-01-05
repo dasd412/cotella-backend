@@ -7,6 +7,7 @@ import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.session.InterviewSession;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -40,11 +41,11 @@ public class Answer extends BaseTimeEntity {
   @Column(name = "dislikes_count", nullable = false, columnDefinition = "int default 0")
   private int dislikesCount;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "interview_question_id")
   private InterviewQuestion interviewQuestion;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "interview_session_id")
   private InterviewSession interviewSession;
 
