@@ -46,6 +46,11 @@ public class InterviewQuestion extends BaseTimeEntity {
     this.interviewKeyword = interviewKeyword;
   }
 
+  public void modifyQuestionContent(String questionContent) {
+    checkNotNull(questionContent);
+    this.questionContent = questionContent;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id);

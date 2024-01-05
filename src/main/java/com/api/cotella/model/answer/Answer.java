@@ -64,6 +64,14 @@ public class Answer extends BaseTimeEntity {
     this.interviewSession = interviewSession;
   }
 
+  public void increaseLikesCount() {
+    this.likesCount += 1;
+  }
+
+  public void increaseDislikesCount() {
+    this.dislikesCount += 1;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id);

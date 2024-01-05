@@ -48,6 +48,14 @@ public class QuestionMetaData extends BaseTimeEntity {
     this.interviewQuestion = interviewQuestion;
   }
 
+  public void modifyModelAnswerContent() {
+    this.modelAnswerContent = modelAnswerContent;
+  }
+
+  public void modifyObjectives() {
+    this.objectives = objectives;
+  }
+
   @Override
   public int hashCode() {
     return Objects.hash(id);
