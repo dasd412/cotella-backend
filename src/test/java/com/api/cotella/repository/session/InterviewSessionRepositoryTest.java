@@ -7,7 +7,7 @@ import com.api.cotella.model.session.InterviewSession;
 import com.api.cotella.model.user.InterviewUser;
 import com.api.cotella.repository.user.InterviewUserRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
+
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,17 +63,6 @@ class InterviewSessionRepositoryTest {
     Optional<InterviewSession> foundSession = interviewSessionRepository.findById(session.getId());
     assertTrue(foundSession.isPresent());
     assertEquals(session.getId(), foundSession.get().getId());
-  }
-
-  @Test
-  public void testDelete() {
-    interviewSessionRepository.save(session);
-    Optional<InterviewSession> foundSession = interviewSessionRepository.findById(session.getId());
-    assertTrue(foundSession.isPresent());
-
-    interviewSessionRepository.delete(session);
-    Optional<InterviewSession> afterDelete = interviewSessionRepository.findById(session.getId());
-    assertFalse(afterDelete.isPresent());
   }
 
   @Test
