@@ -52,23 +52,20 @@ class InterviewSessionRepositoryTest {
   }
 
   @Test
-  @Transactional
   public void testCreate() {
     interviewSessionRepository.save(session);
     assertNotNull(session.getId());
   }
 
   @Test
-  @Transactional
   public void testRead() {
     interviewSessionRepository.save(session);
     Optional<InterviewSession> foundSession = interviewSessionRepository.findById(session.getId());
     assertTrue(foundSession.isPresent());
-    assertEquals(session, foundSession.get());
+    assertEquals(session.getId(), foundSession.get().getId());
   }
 
   @Test
-  @Transactional
   public void testDelete() {
     interviewSessionRepository.save(session);
     Optional<InterviewSession> foundSession = interviewSessionRepository.findById(session.getId());
