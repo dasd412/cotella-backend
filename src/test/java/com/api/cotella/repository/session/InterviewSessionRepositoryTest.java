@@ -63,6 +63,7 @@ class InterviewSessionRepositoryTest {
     Optional<InterviewSession> foundSession = interviewSessionRepository.findById(session.getId());
     assertTrue(foundSession.isPresent());
     assertEquals(session.getId(), foundSession.get().getId());
+    assertEquals(session.getInterviewUser(), foundSession.get().getInterviewUser());
   }
 
   @Test

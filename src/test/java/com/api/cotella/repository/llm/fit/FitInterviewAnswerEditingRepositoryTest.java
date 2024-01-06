@@ -65,6 +65,8 @@ class FitInterviewAnswerEditingRepositoryTest {
     assertTrue(found.isPresent());
 
     assertEquals(editing.getId(), found.get().getId());
+    assertEquals(editing.getContent(), found.get().getContent());
+    assertEquals(editing.getAnswer(), found.get().getAnswer());
   }
 
   @Test

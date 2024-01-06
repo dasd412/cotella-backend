@@ -70,6 +70,8 @@ class RelatedQuestionLLMRepositoryTest {
     assertTrue(found.isPresent());
 
     assertEquals(relatedQuestionLLM.getId(), found.get().getId());
+    assertEquals(relatedQuestionLLM.getContent(), found.get().getContent());
+    assertEquals(relatedQuestionLLM.getInterviewQuestion(), found.get().getInterviewQuestion());
   }
 
   @Test

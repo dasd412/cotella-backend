@@ -90,6 +90,9 @@ class IntervieweeAnswerRepositoryTest {
     assertTrue(found.isPresent());
 
     assertEquals(found.get().getId(), answer.getId());
+    assertEquals(found.get().getAnswerContent(), answer.getAnswerContent());
+    assertEquals(found.get().getInterviewQuestion(), answer.getInterviewQuestion());
+    assertEquals(found.get().getInterviewSession(), answer.getInterviewSession());
   }
 
   @Test
