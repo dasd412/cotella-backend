@@ -34,6 +34,28 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
   }
 
   @Override
+  public List<InterviewQuestion> findRandomTechQuestionsWithKeyword(
+      InterviewKeywordContent interviewKeywordContent) {
+    return null;
+  }
+
+  @Override
+  public List<InterviewQuestion> findRandomTechQuestions() {
+    return null;
+  }
+
+  @Override
+  public List<InterviewQuestion> findRandomFitQuestionsWithKeyword(
+      InterviewKeywordContent interviewKeywordContent) {
+    return null;
+  }
+
+  @Override
+  public List<InterviewQuestion> findRandomFitQuestions() {
+    return null;
+  }
+
+  @Override
   public List<ModelAnswerDTO> findModelAnswersOfQuestions(List<Integer> interviewQuestionIds) {
     /*
       select q.interview_question_id, q.model_answer_content from question_metadata q
