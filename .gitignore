@@ -122,6 +122,6 @@ vendor/pkg/
 pyenv
 Vagrantfile
 
-## etc
-cotella_data.sql
-cotella_table.sql
+## data source
+data.sql
+schema.sql
