@@ -19,7 +19,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Getter
 @Entity
-@Table(name = "question_meta_data")
+@Table(name = "question_metadata")
 public class QuestionMetaData extends BaseTimeEntity {
 
   @Id
@@ -28,6 +28,7 @@ public class QuestionMetaData extends BaseTimeEntity {
   private Integer id;
 
   @Lob
+  @Column(name="model_answer_content")
   private String modelAnswerContent;
 
   @Lob
