@@ -27,7 +27,9 @@ public enum InterviewKeywordContent {
 
   SITUATION(11),
 
-  VALUES(12);
+  VALUES(12),
+
+  RANDOM(13);
 
   private final int interviewKeywordId;
 
