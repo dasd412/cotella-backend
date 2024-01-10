@@ -36,6 +36,9 @@ public class InterviewQuestion extends BaseTimeEntity {
   @JoinColumn(name = "interview_keyword_id")
   private InterviewKeyword interviewKeyword;
 
+  @Column(name="rand_id")
+  private Integer randId;
+
   public InterviewQuestion() {
   }
 
