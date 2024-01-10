@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import com.api.cotella.common.util.EmailChecker;
+import com.api.cotella.model.common.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,14 +17,15 @@ import lombok.Getter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
-@Entity
 @Getter
-@Table(name="interview_user")
-public class InterviewUser {
+@Entity
+@Table(name = "interview_user")
+public class InterviewUser extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(name = "interview_user_id")
+  private Integer id;
 
   @Column(nullable = false, unique = true)
   private String name;
@@ -45,9 +47,10 @@ public class InterviewUser {
   }
 
   @Builder
-  public InterviewUser(String name, String email, String password, String provider, String providerId) {
-    checkNotNull(name,"name must not be null");
-    checkNotNull(email,"email must not be null");
+  public InterviewUser(String name, String email, String password, String provider,
+      String providerId) {
+    checkNotNull(name, "name must not be null");
+    checkNotNull(email, "email must not be null");
     checkArgument(!name.isEmpty() && name.length() <= 50, "name should be between 1 and 50");
     checkArgument(EmailChecker.checkEmail(email), "String must be format of email.");
     this.name = name;
@@ -58,13 +61,13 @@ public class InterviewUser {
   }
 
   public void modifyName(String name) {
-    checkNotNull(name,"name must not be null");
+    checkNotNull(name, "name must not be null");
     checkArgument(!name.isEmpty() && name.length() <= 50, "name should be between 1 and 50");
     this.name = name;
   }
 
   public void modifyEmail(String email) {
-    checkNotNull(email,"email must not be null");
+    checkNotNull(email, "email must not be null");
     checkArgument(EmailChecker.checkEmail(email), "String must be format of email.");
     this.email = email;
   }

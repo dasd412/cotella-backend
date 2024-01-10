@@ -121,7 +121,3 @@ bundles/
 vendor/pkg/
 pyenv
 Vagrantfile
-
-## etc
-cotella_data.sql
-cotella_table.sql
