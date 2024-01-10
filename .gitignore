@@ -121,7 +121,3 @@ bundles/
 vendor/pkg/
 pyenv
 Vagrantfile
-
-## data source
-data.sql
-schema.sql
