@@ -6,8 +6,11 @@ import com.api.cotella.model.question.QQuestionMetaData;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
 import com.api.cotella.repository.question.dto.ObjectivesDTO;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import java.util.ArrayList;
 import java.util.List;
 
 public class InterviewQuestionRepositoryImpl implements InterviewQuestionRepositoryCustom {
@@ -68,7 +71,27 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
     select * from interview_question where interview_keyword_id=7 UNION ALL
     (select * from interview_question  where interview_keyword_id=11 order by rand() limit 5);
      */
-    return null;
+
+    int essentialKeywordId = InterviewKeywordContent.ESSENTIAL.getInterviewKeywordId();
+
+    List<InterviewQuestion> firstQuery = jpaQueryFactory.selectFrom(interviewQuestion)
+        .where(interviewQuestion.id.eq(essentialKeywordId))
+        .fetch();
+
+    List<InterviewQuestion> result = new ArrayList<>(firstQuery);
+
+    List<InterviewQuestion> secondQuery = jpaQueryFactory.selectFrom(interviewQuestion)
+        .where(interviewQuestion.id.eq(interviewKeywordContent.getInterviewKeywordId()))
+        .orderBy(makeRandom())
+        .limit(5).fetch();
+
+    result.addAll(secondQuery);
+
+    return result;
+  }
+
+  private static OrderSpecifier<Double> makeRandom() {
+    return Expressions.numberTemplate(Double.class, "function('rand')").asc();
   }
 
   @Override
