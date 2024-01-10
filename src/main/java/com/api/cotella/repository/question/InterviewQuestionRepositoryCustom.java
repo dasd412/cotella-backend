@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface InterviewQuestionRepositoryCustom {
   List<InterviewQuestion> findRandomFitQuestions(
-      InterviewKeywordContent interviewKeywordContent);
+      InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException;
 
   List<ModelAnswerDTO> findModelAnswersOfQuestions(List<Integer> interviewQuestionIds);
 

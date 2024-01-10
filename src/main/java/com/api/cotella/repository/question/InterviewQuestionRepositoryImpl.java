@@ -26,24 +26,31 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
 
   @Override
   public List<InterviewQuestion> findRandomFitQuestions(
-      InterviewKeywordContent interviewKeywordContent) {
+      InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException {
     /*
     필수 질문 5개 조회 + 다른 인성 질문 랜덤 5개
     
     select * from interview_question where interview_keyword_id=7 UNION ALL
     (select * from interview_question  where interview_keyword_id=11 order by rand() limit 5);
      */
+    if (InterviewKeywordContent.DB.getInterviewKeywordId()
+        <= interviewKeywordContent.getInterviewKeywordId()
+        && interviewKeywordContent.getInterviewKeywordId()
+        <= InterviewKeywordContent.SPRING.getInterviewKeywordId()) {
+      throw new IllegalArgumentException("This method does not support tech question.");
+    }
 
     int essentialKeywordId = InterviewKeywordContent.ESSENTIAL.getInterviewKeywordId();
 
     List<InterviewQuestion> firstQuery = jpaQueryFactory.selectFrom(interviewQuestion)
-        .where(interviewQuestion.id.eq(essentialKeywordId))
+        .where(interviewQuestion.interviewKeyword.id.eq(essentialKeywordId))
         .fetch();
 
     List<InterviewQuestion> result = new ArrayList<>(firstQuery);
 
     List<InterviewQuestion> secondQuery = jpaQueryFactory.selectFrom(interviewQuestion)
-        .where(interviewQuestion.id.eq(interviewKeywordContent.getInterviewKeywordId()))
+        .where(interviewQuestion.interviewKeyword.id.eq(
+            interviewKeywordContent.getInterviewKeywordId()))
         .orderBy(makeRandom())
         .limit(5).fetch();
 

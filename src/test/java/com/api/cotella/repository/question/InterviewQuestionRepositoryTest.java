@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.model.question.InterviewQuestion;
-import com.api.cotella.model.question.keyword.InterviewKeyword;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 import org.junit.jupiter.api.AfterEach;
