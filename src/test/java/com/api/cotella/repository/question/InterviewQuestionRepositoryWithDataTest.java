@@ -30,13 +30,22 @@ public class InterviewQuestionRepositoryWithDataTest {
   @Transactional
   @Test
   public void testFindInitialRandomTechQuestions() {
+    List<InterviewQuestion> initialTechQuestions = interviewQuestionRepository.findInitialRandomTechQuestions(
+        InterviewKeywordContent.DB.getInterviewKeywordId());
 
+    assertEquals(initialTechQuestions.size(), 5);
   }
 
   @Transactional
   @Test
-  public void testFindTailQuestionsForAncestors() {
+  public void testFindFollowupQuestionsForAncestors() {
 
+    List<InterviewQuestion> followupQuestions = interviewQuestionRepository.findFollowupQuestionsForAncestors(
+        1, 2, 3, 5, 6);
+
+    assertEquals(followupQuestions.size(), 5);
+
+    followupQuestions.forEach(elem->assertEquals(elem.getInterviewKeyword().getId(),InterviewKeywordContent.DB.getInterviewKeywordId()));
   }
 
   @Test
