@@ -1,4 +1,4 @@
-package com.api.cotella.controller.completion.request;
+package com.api.cotella.service.llm.tech.dto;
 
 import lombok.Data;
 

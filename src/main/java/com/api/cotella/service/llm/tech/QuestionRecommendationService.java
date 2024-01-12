@@ -1,8 +1,9 @@
 package com.api.cotella.service.llm.tech;
 
-import com.api.cotella.controller.completion.request.TechQuestionEndRequestDTO;
 import com.api.cotella.repository.llm.tech.RelatedQuestionLLMRepository;
-import com.api.cotella.service.llm.tech.dto.RelatedTechQuestionDTO;
+import com.api.cotella.service.llm.tech.dto.RecommendedQuestionPairDTO;
+import com.api.cotella.service.llm.tech.dto.TechQuestionAnswerPairDTO;
+import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,8 +15,8 @@ public class QuestionRecommendationService {
     this.relatedQuestionLLMRepository = relatedQuestionLLMRepository;
   }
 
-  public RelatedTechQuestionDTO recommendRelatedTechQuestions(
-      TechQuestionEndRequestDTO techQuestionEndRequestDTO) {
+  public List<RecommendedQuestionPairDTO> recommendRelatedTechQuestions(
+      List<TechQuestionAnswerPairDTO> techQuestionAnswerPairDTOList) {
     return null;
   }
 }
