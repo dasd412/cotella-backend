@@ -14,6 +14,7 @@ import com.api.cotella.service.question.dto.FitQuestionStartDTO;
 import com.api.cotella.service.question.dto.TechQuestionPairDTO;
 import com.api.cotella.service.question.dto.TechQuestionStartDTO;
 import jakarta.transaction.Transactional;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -34,7 +35,7 @@ public class InterviewQuestionService {
   }
 
   @Transactional
-  public TechQuestionStartDTO giveTechQuestions(InterviewUser interviewUser,
+  public TechQuestionStartDTO giveRandomTechQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
     Integer interviewSessionId = makeInterviewSession(interviewUser);
 
@@ -44,14 +45,11 @@ public class InterviewQuestionService {
     List<FollowupQuestionDTO> allFollowupQuestionDtoList = giveAllFollowupQuestionsAboutInitialQuestions(
         initialTechQuestions);
 
-    List<FollowupQuestionDTO> chosenRandomFollowupQuestions = chooseRandomFollowupQuestions(
+    List<FollowupQuestionDTO> chosenRandomFollowupQuestions = chooseOneRandomFollowupQuestionOfEachInitialQuestion(
         allFollowupQuestionDtoList);
 
-    List<TechQuestionPairDTO> techQuestionPairDTOList = IntStream.range(0, QUESTION_SIZE)
-        .mapToObj(
-            i -> new TechQuestionPairDTO(initialTechQuestions.get(i),
-                chosenRandomFollowupQuestions.get(i)))
-        .collect(Collectors.toList());
+    List<TechQuestionPairDTO> techQuestionPairDTOList = mapInitialQuestionAndFollowupQuestion(
+        initialTechQuestions, chosenRandomFollowupQuestions);
 
     return new TechQuestionStartDTO(interviewSessionId, techQuestionPairDTOList);
   }
@@ -85,7 +83,7 @@ public class InterviewQuestionService {
         initialTechQuestionIds);
   }
 
-  private List<FollowupQuestionDTO> chooseRandomFollowupQuestions(
+  private List<FollowupQuestionDTO> chooseOneRandomFollowupQuestionOfEachInitialQuestion(
       List<FollowupQuestionDTO> followupQuestionDTOList) {
     Random random = new Random();
 
@@ -97,7 +95,32 @@ public class InterviewQuestionService {
         .collect(Collectors.toList());
   }
 
-  public FitQuestionStartDTO giveFitQuestions(InterviewUser interviewUser,
+  private List<TechQuestionPairDTO> mapInitialQuestionAndFollowupQuestion(
+      List<InterviewQuestion> initialTechQuestions,
+      List<FollowupQuestionDTO> chosenRandomFollowupQuestions) {
+
+    if (initialTechQuestions.size() != chosenRandomFollowupQuestions.size()) {
+      throw new IllegalArgumentException(
+          "Initial questions size must be equal to chosenRandomFollowupQuestions");
+    }
+
+    // (초기 질문 (id=1), 꼬리 질문 (ancestor=1))과 같이 매핑하기 위해 정렬합니다.
+    List<InterviewQuestion> sortedInitialQuestions = initialTechQuestions.stream()
+        .sorted(Comparator.comparing(InterviewQuestion::getId))
+        .toList();
+
+    List<FollowupQuestionDTO> sortedFollowupQuestions = chosenRandomFollowupQuestions.stream()
+        .sorted(Comparator.comparing(FollowupQuestionDTO::getAncestor))
+        .toList();
+
+    return IntStream.range(0, QUESTION_SIZE)
+        .mapToObj(
+            i -> new TechQuestionPairDTO(sortedInitialQuestions.get(i),
+                sortedFollowupQuestions.get(i)))
+        .collect(Collectors.toList());
+  }
+
+  public FitQuestionStartDTO giveRandomFitQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
     return null;
   }
