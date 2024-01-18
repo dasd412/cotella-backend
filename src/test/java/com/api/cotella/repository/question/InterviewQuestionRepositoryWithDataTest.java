@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
+import com.api.cotella.repository.question.dto.FollowupQuestionDTO;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
 import com.api.cotella.repository.question.dto.ObjectivesDTO;
 import jakarta.transaction.Transactional;
@@ -40,7 +41,7 @@ public class InterviewQuestionRepositoryWithDataTest {
   public void testFindFollowupQuestionsForAncestors() {
     List<Integer> questionIds = Arrays.asList(1, 2, 3, 5, 6);
 
-    List<InterviewQuestion> followupQuestions = interviewQuestionRepository.findFollowupQuestionsForAncestors(
+    List<FollowupQuestionDTO> followupQuestions = interviewQuestionRepository.findFollowupQuestionsForAncestors(
         questionIds);
 
     assertEquals(followupQuestions.size(), 20);

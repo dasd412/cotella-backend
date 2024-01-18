@@ -6,6 +6,7 @@ import com.api.cotella.model.question.QQuestionClosureTable;
 import com.api.cotella.model.question.QQuestionMetaData;
 import com.api.cotella.model.question.QuestionMetaData;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
+import com.api.cotella.repository.question.dto.FollowupQuestionDTO;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
 import com.api.cotella.repository.question.dto.ObjectivesDTO;
 import com.querydsl.core.types.OrderSpecifier;
@@ -27,12 +28,15 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
   }
 
   @Override
-  public List<InterviewQuestion> findFollowupQuestionsForAncestors(
+  public List<FollowupQuestionDTO> findFollowupQuestionsForAncestors(
       List<Integer> interviewQuestionIds) {
 
     int DIRECT_FOLLOWUP_QUESTION_DEPTH = 1;
 
-    return jpaQueryFactory.selectFrom(interviewQuestion)
+    return jpaQueryFactory
+        .select(Projections.constructor(FollowupQuestionDTO.class, questionClosureTable.ancestor,
+            interviewQuestion.id, interviewQuestion.questionContent))
+        .from(interviewQuestion)
         .innerJoin(questionClosureTable)
         .on(interviewQuestion.id.eq(questionClosureTable.descendant))
         .where(questionClosureTable.ancestor.in(interviewQuestionIds)
@@ -44,7 +48,7 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
   public List<InterviewQuestion> findRandomFitQuestions(
       InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException {
 
-    int MAX_QUESTION_NUMBER=5;
+    int MAX_QUESTION_NUMBER = 5;
 
     /*
     필수 질문 5개 조회 + 다른 인성 질문 랜덤 5개
