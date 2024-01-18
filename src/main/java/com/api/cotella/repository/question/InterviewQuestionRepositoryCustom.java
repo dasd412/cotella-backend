@@ -7,6 +7,9 @@ import com.api.cotella.repository.question.dto.ObjectivesDTO;
 import java.util.List;
 
 public interface InterviewQuestionRepositoryCustom {
+
+  List<InterviewQuestion> findFollowupQuestionsForAncestors(List<Integer> interviewQuestionIds);
+
   List<InterviewQuestion> findRandomFitQuestions(
       InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException;
 

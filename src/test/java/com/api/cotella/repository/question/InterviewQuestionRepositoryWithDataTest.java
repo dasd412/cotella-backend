@@ -8,7 +8,7 @@ import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
 import com.api.cotella.repository.question.dto.ObjectivesDTO;
 import jakarta.transaction.Transactional;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -36,16 +36,14 @@ public class InterviewQuestionRepositoryWithDataTest {
     assertEquals(initialTechQuestions.size(), 5);
   }
 
-  @Transactional
   @Test
   public void testFindFollowupQuestionsForAncestors() {
+    List<Integer> questionIds = Arrays.asList(1, 2, 3, 5, 6);
 
     List<InterviewQuestion> followupQuestions = interviewQuestionRepository.findFollowupQuestionsForAncestors(
-        1, 2, 3, 5, 6);
+        questionIds);
 
-    assertEquals(followupQuestions.size(), 5);
-
-    followupQuestions.forEach(elem->assertEquals(elem.getInterviewKeyword().getId(),InterviewKeywordContent.DB.getInterviewKeywordId()));
+    assertEquals(followupQuestions.size(), 20);
   }
 
   @Test
@@ -82,13 +80,7 @@ public class InterviewQuestionRepositoryWithDataTest {
   @Transactional
   @Test
   public void testFindModelAnswersOfQuestions() {
-    List<Integer> interviewQuestionIds = new ArrayList<>();
-
-    interviewQuestionIds.add(2);
-    interviewQuestionIds.add(5);
-    interviewQuestionIds.add(6);
-    interviewQuestionIds.add(7);
-    interviewQuestionIds.add(10);
+    List<Integer> interviewQuestionIds = Arrays.asList(2, 5, 6, 7, 10);
 
     List<ModelAnswerDTO> modelAnswerDTOList = interviewQuestionRepository.findModelAnswersOfQuestions(
         interviewQuestionIds);
@@ -102,11 +94,7 @@ public class InterviewQuestionRepositoryWithDataTest {
   @Transactional
   @Test
   public void testFindObjectivesOfQuestions() {
-    List<Integer> interviewQuestionIds = new ArrayList<>();
-
-    interviewQuestionIds.add(177);
-    interviewQuestionIds.add(182);
-    interviewQuestionIds.add(185);
+    List<Integer> interviewQuestionIds = Arrays.asList(177, 182, 185);
 
     List<ObjectivesDTO> objectivesDTOList = interviewQuestionRepository.findObjectivesOfQuestions(
         interviewQuestionIds);

@@ -2,7 +2,9 @@ package com.api.cotella.repository.question;
 
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.QInterviewQuestion;
+import com.api.cotella.model.question.QQuestionClosureTable;
 import com.api.cotella.model.question.QQuestionMetaData;
+import com.api.cotella.model.question.QuestionMetaData;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
 import com.api.cotella.repository.question.dto.ObjectivesDTO;
@@ -16,7 +18,7 @@ import java.util.List;
 public class InterviewQuestionRepositoryImpl implements InterviewQuestionRepositoryCustom {
 
   private final JPAQueryFactory jpaQueryFactory;
-
+  private final QQuestionClosureTable questionClosureTable = QQuestionClosureTable.questionClosureTable;
   private final QQuestionMetaData questionMetaData = QQuestionMetaData.questionMetaData;
   private final QInterviewQuestion interviewQuestion = QInterviewQuestion.interviewQuestion;
 
@@ -25,8 +27,25 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
   }
 
   @Override
+  public List<InterviewQuestion> findFollowupQuestionsForAncestors(
+      List<Integer> interviewQuestionIds) {
+
+    int DIRECT_FOLLOWUP_QUESTION_DEPTH = 1;
+
+    return jpaQueryFactory.selectFrom(interviewQuestion)
+        .innerJoin(questionClosureTable)
+        .on(interviewQuestion.id.eq(questionClosureTable.descendant))
+        .where(questionClosureTable.ancestor.in(interviewQuestionIds)
+            .and(questionClosureTable.depth.eq(DIRECT_FOLLOWUP_QUESTION_DEPTH)))
+        .fetch();
+  }
+
+  @Override
   public List<InterviewQuestion> findRandomFitQuestions(
       InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException {
+
+    int MAX_QUESTION_NUMBER=5;
+
     /*
     필수 질문 5개 조회 + 다른 인성 질문 랜덤 5개
     
@@ -52,7 +71,7 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
         .where(interviewQuestion.interviewKeyword.id.eq(
             interviewKeywordContent.getInterviewKeywordId()))
         .orderBy(makeRandom())
-        .limit(5).fetch();
+        .limit(MAX_QUESTION_NUMBER).fetch();
 
     result.addAll(secondQuery);
 

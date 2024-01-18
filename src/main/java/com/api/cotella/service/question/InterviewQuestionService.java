@@ -74,11 +74,11 @@ public class InterviewQuestionService {
 
   private List<InterviewQuestion> giveFollowupQuestionsAboutInitialQuestions(
       List<InterviewQuestion> initialTechQuestions) {
+
+    List<Integer>initialTechQuestionIds=initialTechQuestions.stream().map(InterviewQuestion::getId).toList();
+
     List<InterviewQuestion> followupQuestions =
-        this.interviewQuestionRepository.findFollowupQuestionsForAncestors(
-            initialTechQuestions.get(0).getId(), initialTechQuestions.get(1).getId(),
-            initialTechQuestions.get(2).getId(), initialTechQuestions.get(3).getId(),
-            initialTechQuestions.get(4).getId());
+        this.interviewQuestionRepository.findFollowupQuestionsForAncestors(initialTechQuestionIds);
 
     if (followupQuestions.size() != QUESTION_SIZE) {
       throw new InvalidQuestionCountException(
@@ -88,7 +88,7 @@ public class InterviewQuestionService {
     return followupQuestions;
   }
 
-  public FitQuestionStartDTO giveFitQuestions(Integer userId, InterviewTopic interviewTopic,
+  public FitQuestionStartDTO giveFitQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
     return null;
   }
