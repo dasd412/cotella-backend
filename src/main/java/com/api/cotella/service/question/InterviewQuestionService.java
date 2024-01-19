@@ -37,6 +37,14 @@ public class InterviewQuestionService {
   @Transactional
   public TechQuestionStartDTO giveRandomTechQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
+
+    if (InterviewKeywordContent.ESSENTIAL.getInterviewKeywordId()
+        <= interviewKeywordContent.getInterviewKeywordId()
+        && interviewKeywordContent.getInterviewKeywordId()
+        <= InterviewKeywordContent.VALUES.getInterviewKeywordId()) {
+      throw new IllegalArgumentException("This method does not support fit question.");
+    }
+
     Integer interviewSessionId = makeInterviewSession(interviewUser);
 
     List<InterviewQuestion> initialTechQuestions = giveInitialRandomTechQuestions(
@@ -122,6 +130,9 @@ public class InterviewQuestionService {
 
   public FitQuestionStartDTO giveRandomFitQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
+
+    Integer interviewSessionId = makeInterviewSession(interviewUser);
+
     return null;
   }
 

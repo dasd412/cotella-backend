@@ -49,6 +49,19 @@ class InterviewQuestionServiceTest {
 
   @Transactional
   @Test
+  public void testGiveTechQuestionsWhenKeywordIsFit() {
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> interviewQuestionService.giveRandomTechQuestions(user,
+            InterviewKeywordContent.EXPERIENCE));
+
+    String expectedMessage = "This method does not support fit question.";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Transactional
+  @Test
   public void testGiveTechQuestions() {
 
     TechQuestionStartDTO dto = interviewQuestionService.giveRandomTechQuestions(user,
