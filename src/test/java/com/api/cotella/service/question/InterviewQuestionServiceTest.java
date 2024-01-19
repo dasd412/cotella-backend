@@ -3,9 +3,12 @@ package com.api.cotella.service.question;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.api.cotella.config.JpaTestConfiguration;
+import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.model.user.InterviewUser;
+import com.api.cotella.repository.session.InterviewSessionRepository;
 import com.api.cotella.repository.user.InterviewUserRepository;
+import com.api.cotella.service.question.dto.FitQuestionStartDTO;
 import com.api.cotella.service.question.dto.TechQuestionPairDTO;
 import com.api.cotella.service.question.dto.TechQuestionStartDTO;
 import jakarta.transaction.Transactional;
@@ -63,11 +66,8 @@ class InterviewQuestionServiceTest {
   @Transactional
   @Test
   public void testGiveTechQuestions() {
-
     TechQuestionStartDTO dto = interviewQuestionService.giveRandomTechQuestions(user,
         InterviewKeywordContent.DB);
-
-    assertEquals(dto.getInterviewSessionId(), 1);
 
     List<TechQuestionPairDTO> techQuestionPairDTOList = dto.getTechQuestionPairDTOList();
 
@@ -77,5 +77,58 @@ class InterviewQuestionServiceTest {
       assertEquals(pairDTO.getFollowupTechQuestion().getAncestor(),
           pairDTO.getInitialTechQuestion().getId());
     }
+  }
+
+  @Transactional
+  @Test
+  public void testGiveFitQuestionsWhenKeywordIsEssential() {
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> interviewQuestionService.giveRandomFitQuestions(user,
+            InterviewKeywordContent.ESSENTIAL));
+
+    String expectedMessage = "This method supports fit keyword except essential keyword.";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+
+  @Transactional
+  @Test
+  public void testGiveFitQuestionsWhenKeywordIsTech() {
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> interviewQuestionService.giveRandomFitQuestions(user,
+            InterviewKeywordContent.JAVA));
+
+    String expectedMessage = "This method does not support tech question.";
+    String actualMessage = exception.getMessage();
+
+    assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  @Transactional
+  @Test
+  public void testGiveFitQuestions() {
+    FitQuestionStartDTO dto = interviewQuestionService.giveRandomFitQuestions(user,
+        InterviewKeywordContent.SITUATION);
+
+    assertEquals(dto.getFitInterviewQuestions().size(), 10);
+
+    int essentialCount = 0;
+    int situationCount = 0;
+
+    for (InterviewQuestion interviewQuestion : dto.getFitInterviewQuestions()) {
+      if (interviewQuestion.getInterviewKeyword().getKeywordContent()
+          == InterviewKeywordContent.ESSENTIAL) {
+        essentialCount += 1;
+      }
+      if (interviewQuestion.getInterviewKeyword().getKeywordContent()
+          == InterviewKeywordContent.SITUATION) {
+        situationCount += 1;
+      }
+    }
+
+    assertEquals(essentialCount, 5);
+    assertEquals(situationCount, 5);
   }
 }

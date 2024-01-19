@@ -131,9 +131,25 @@ public class InterviewQuestionService {
   public FitQuestionStartDTO giveRandomFitQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
 
+    if (interviewKeywordContent.getInterviewKeywordId()
+        == InterviewKeywordContent.ESSENTIAL.getInterviewKeywordId()) {
+      throw new IllegalArgumentException(
+          "This method supports fit keyword except essential keyword.");
+    }
+
+    if (InterviewKeywordContent.DB.getInterviewKeywordId()
+        <= interviewKeywordContent.getInterviewKeywordId()
+        && interviewKeywordContent.getInterviewKeywordId()
+        <= InterviewKeywordContent.SPRING.getInterviewKeywordId()) {
+      throw new IllegalArgumentException("This method does not support tech question.");
+    }
+
     Integer interviewSessionId = makeInterviewSession(interviewUser);
 
-    return null;
+    List<InterviewQuestion> fitQuestions = interviewQuestionRepository.findRandomFitQuestions(
+        interviewKeywordContent);
+
+    return new FitQuestionStartDTO(interviewSessionId, fitQuestions);
   }
 
   public List<ModelAnswerDTO> giveModelAnswerOfTechQuestions(List<Integer> interviewQuestionIds) {
