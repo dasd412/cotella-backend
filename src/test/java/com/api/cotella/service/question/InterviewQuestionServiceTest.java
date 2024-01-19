@@ -2,11 +2,11 @@ package com.api.cotella.service.question;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.api.cotella.common.CommonConstants;
 import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.model.user.InterviewUser;
-import com.api.cotella.repository.session.InterviewSessionRepository;
 import com.api.cotella.repository.user.InterviewUserRepository;
 import com.api.cotella.service.question.dto.FitQuestionStartDTO;
 import com.api.cotella.service.question.dto.TechQuestionPairDTO;
@@ -128,7 +128,7 @@ class InterviewQuestionServiceTest {
       }
     }
 
-    assertEquals(essentialCount, 5);
-    assertEquals(situationCount, 5);
+    assertEquals(essentialCount, CommonConstants.FIT_QUESTION_NUMBER_ESSENTIAL);
+    assertEquals(situationCount, CommonConstants.FIT_QUESTION_NUMBER_NOT_ESSENTIAL);
   }
 }

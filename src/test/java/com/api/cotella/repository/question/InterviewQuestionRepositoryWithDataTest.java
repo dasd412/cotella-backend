@@ -2,6 +2,7 @@ package com.api.cotella.repository.question;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.api.cotella.common.CommonConstants;
 import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
@@ -34,7 +35,7 @@ public class InterviewQuestionRepositoryWithDataTest {
     List<InterviewQuestion> initialTechQuestions = interviewQuestionRepository.findInitialRandomTechQuestions(
         InterviewKeywordContent.DB.getInterviewKeywordId());
 
-    assertEquals(initialTechQuestions.size(), 5);
+    assertEquals(initialTechQuestions.size(), CommonConstants.INITIAL_TECH_QUESTION_NUMBER);
   }
 
   @Test
@@ -49,9 +50,8 @@ public class InterviewQuestionRepositoryWithDataTest {
 
   @Test
   public void testFindRandomFitQuestionsWhenKeywordIsTech() {
-    Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-      interviewQuestionRepository.findRandomFitQuestions(InterviewKeywordContent.JAVA);
-    });
+    Exception exception = assertThrows(IllegalArgumentException.class,
+        () -> interviewQuestionRepository.findRandomFitQuestions(InterviewKeywordContent.JAVA));
 
     String expectedMessage = "This method does not support tech question.";
     String actualMessage = exception.getMessage();
@@ -65,15 +65,17 @@ public class InterviewQuestionRepositoryWithDataTest {
     List<InterviewQuestion> fitQuestions = interviewQuestionRepository.findRandomFitQuestions(
         InterviewKeywordContent.SITUATION);
 
-    assertEquals(fitQuestions.size(), 10);
+    assertEquals(fitQuestions.size(), CommonConstants.FIT_QUESTION_NUMBER_ESSENTIAL
+        + CommonConstants.FIT_QUESTION_NUMBER_NOT_ESSENTIAL);
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < CommonConstants.FIT_QUESTION_NUMBER_ESSENTIAL; i++) {
       assertEquals(fitQuestions.get(i).getInterviewKeyword().getId(),
           InterviewKeywordContent.ESSENTIAL.getInterviewKeywordId());
     }
 
-    for (int i = 5; i < 10; i++) {
-      assertEquals(fitQuestions.get(i).getInterviewKeyword().getId(),
+    for (int i = 0; i < CommonConstants.FIT_QUESTION_NUMBER_NOT_ESSENTIAL; i++) {
+      assertEquals(fitQuestions.get(i + CommonConstants.FIT_QUESTION_NUMBER_NOT_ESSENTIAL)
+              .getInterviewKeyword().getId(),
           InterviewKeywordContent.SITUATION.getInterviewKeywordId());
     }
   }

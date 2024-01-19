@@ -1,5 +1,6 @@
 package com.api.cotella.service.question;
 
+import com.api.cotella.common.CommonConstants;
 import com.api.cotella.common.filter.InvalidQuestionCountException;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
@@ -26,7 +27,6 @@ public class InterviewQuestionService {
 
   private final InterviewSessionRepository interviewSessionRepository;
   private final InterviewQuestionRepository interviewQuestionRepository;
-  private final static Integer QUESTION_SIZE = 5;
 
   public InterviewQuestionService(InterviewSessionRepository interviewSessionRepository,
       InterviewQuestionRepository interviewQuestionRepository) {
@@ -74,9 +74,9 @@ public class InterviewQuestionService {
         this.interviewQuestionRepository.findInitialRandomTechQuestions(
             interviewKeywordContent.getInterviewKeywordId());
 
-    if (initialTechQuestions.size() != QUESTION_SIZE) {
+    if (initialTechQuestions.size() != CommonConstants.INITIAL_TECH_QUESTION_NUMBER) {
       throw new InvalidQuestionCountException(
-          "Initial questions size must be equal to " + QUESTION_SIZE);
+          "Initial questions size must be equal to " + CommonConstants.INITIAL_TECH_QUESTION_NUMBER);
     }
 
     return initialTechQuestions;
@@ -121,7 +121,7 @@ public class InterviewQuestionService {
         .sorted(Comparator.comparing(FollowupQuestionDTO::getAncestor))
         .toList();
 
-    return IntStream.range(0, QUESTION_SIZE)
+    return IntStream.range(0, CommonConstants.INITIAL_TECH_QUESTION_NUMBER)
         .mapToObj(
             i -> new TechQuestionPairDTO(sortedInitialQuestions.get(i),
                 sortedFollowupQuestions.get(i)))

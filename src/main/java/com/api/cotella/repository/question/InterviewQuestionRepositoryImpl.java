@@ -1,10 +1,10 @@
 package com.api.cotella.repository.question;
 
+import com.api.cotella.common.CommonConstants;
 import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.model.question.QInterviewQuestion;
 import com.api.cotella.model.question.QQuestionClosureTable;
 import com.api.cotella.model.question.QQuestionMetaData;
-import com.api.cotella.model.question.QuestionMetaData;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.repository.question.dto.FollowupQuestionDTO;
 import com.api.cotella.repository.question.dto.ModelAnswerDTO;
@@ -47,9 +47,6 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
   @Override
   public List<InterviewQuestion> findRandomFitQuestions(
       InterviewKeywordContent interviewKeywordContent) throws IllegalArgumentException {
-
-    int MAX_QUESTION_NUMBER = 5;
-
     /*
     필수 질문 5개 조회 + 다른 인성 질문 랜덤 5개
     
@@ -75,7 +72,7 @@ public class InterviewQuestionRepositoryImpl implements InterviewQuestionReposit
         .where(interviewQuestion.interviewKeyword.id.eq(
             interviewKeywordContent.getInterviewKeywordId()))
         .orderBy(makeRandom())
-        .limit(MAX_QUESTION_NUMBER).fetch();
+        .limit(CommonConstants.FIT_QUESTION_NUMBER_NOT_ESSENTIAL).fetch();
 
     result.addAll(secondQuery);
 
