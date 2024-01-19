@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.api.cotella.config.JpaTestConfiguration;
 import com.api.cotella.controller.answer.request.IntervieweeAnswerRequestDTO;
+import com.api.cotella.model.answer.Answer;
 import com.api.cotella.model.question.keyword.InterviewKeywordContent;
 import com.api.cotella.model.user.InterviewUser;
 import com.api.cotella.repository.answer.IntervieweeAnswerRepository;
@@ -65,6 +66,7 @@ class IntervieweeAnswerServiceTest {
         () -> intervieweeAnswerService.saveAnswerOfUser(dto));
 
     String expectedMessage = "Interview Session does not exist.";
+
     String actualMessage = exception.getMessage();
 
     assertTrue(actualMessage.contains(expectedMessage));
@@ -86,6 +88,7 @@ class IntervieweeAnswerServiceTest {
         () -> intervieweeAnswerService.saveAnswerOfUser(dto));
 
     String expectedMessage = "Interview Question does not exist.";
+
     String actualMessage = exception.getMessage();
 
     assertTrue(actualMessage.contains(expectedMessage));
@@ -108,6 +111,11 @@ class IntervieweeAnswerServiceTest {
     Integer savedAnswerId = intervieweeAnswerService.saveAnswerOfUser(dto);
 
     assertTrue(intervieweeAnswerRepository.existsById(savedAnswerId));
+
+    Answer found = intervieweeAnswerRepository.findById(savedAnswerId)
+        .orElseThrow(() -> new EntityNotFoundException("Answer not found"));
+
+    assertEquals(found.getAnswerContent(), answerContent);
   }
 
   @Transactional
@@ -125,5 +133,10 @@ class IntervieweeAnswerServiceTest {
     Integer savedAnswerId = intervieweeAnswerService.saveAnswerOfUser(dto);
 
     assertTrue(intervieweeAnswerRepository.existsById(savedAnswerId));
+
+    Answer found = intervieweeAnswerRepository.findById(savedAnswerId)
+        .orElseThrow(() -> new EntityNotFoundException("Answer not found"));
+
+    assertEquals(found.getAnswerContent(), answerContent);
   }
 }
