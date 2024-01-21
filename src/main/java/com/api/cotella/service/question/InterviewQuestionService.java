@@ -14,13 +14,13 @@ import com.api.cotella.repository.session.InterviewSessionRepository;
 import com.api.cotella.service.question.dto.FitQuestionStartDTO;
 import com.api.cotella.service.question.dto.TechQuestionPairDTO;
 import com.api.cotella.service.question.dto.TechQuestionStartDTO;
-import jakarta.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class InterviewQuestionService {
@@ -76,7 +76,8 @@ public class InterviewQuestionService {
 
     if (initialTechQuestions.size() != CommonConstants.INITIAL_TECH_QUESTION_NUMBER) {
       throw new InvalidQuestionCountException(
-          "Initial questions size must be equal to " + CommonConstants.INITIAL_TECH_QUESTION_NUMBER);
+          "Initial questions size must be equal to "
+              + CommonConstants.INITIAL_TECH_QUESTION_NUMBER);
     }
 
     return initialTechQuestions;
@@ -128,6 +129,7 @@ public class InterviewQuestionService {
         .collect(Collectors.toList());
   }
 
+  @Transactional
   public FitQuestionStartDTO giveRandomFitQuestions(InterviewUser interviewUser,
       InterviewKeywordContent interviewKeywordContent) {
 
@@ -152,11 +154,13 @@ public class InterviewQuestionService {
     return new FitQuestionStartDTO(interviewSessionId, fitQuestions);
   }
 
+  @Transactional(readOnly = true)
   public List<ModelAnswerDTO> giveModelAnswerOfTechQuestions(List<Integer> interviewQuestionIds) {
-    return null;
+    return interviewQuestionRepository.findModelAnswersOfQuestions(interviewQuestionIds);
   }
 
+  @Transactional(readOnly = true)
   public List<ObjectivesDTO> giveObjectivesOfQuestions(List<Integer> interviewQuestionIds) {
-    return null;
+    return interviewQuestionRepository.findObjectivesOfQuestions(interviewQuestionIds);
   }
 }
