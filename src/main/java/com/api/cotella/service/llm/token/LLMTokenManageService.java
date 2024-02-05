@@ -6,6 +6,6 @@ import org.springframework.stereotype.Service;
 public class LLMTokenManageService {
 
   public Boolean hasEnoughTokenOfLLM() {
-    return null;
+    return true;
   }
 }
