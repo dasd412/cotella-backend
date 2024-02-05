@@ -1,13 +1,17 @@
 package com.api.cotella.service.llm.tech;
 
 import com.api.cotella.common.util.PromptUtils;
+import com.api.cotella.model.llm.RelatedQuestionLLM;
+import com.api.cotella.model.question.InterviewQuestion;
 import com.api.cotella.repository.llm.tech.RelatedQuestionLLMRepository;
+import com.api.cotella.repository.question.InterviewQuestionRepository;
 import com.api.cotella.service.llm.LLMCallService;
 import com.api.cotella.service.llm.tech.dto.RecommendedQuestionPairDTO;
 import com.api.cotella.service.llm.tech.dto.TechQuestionAnswerPairDTO;
 import com.theokanning.openai.completion.chat.ChatCompletionResult;
 import com.theokanning.openai.completion.chat.ChatMessage;
 import com.theokanning.openai.completion.chat.ChatMessageRole;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.context.annotation.Profile;
@@ -18,11 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class QuestionRecommendationService {
 
+  private final InterviewQuestionRepository interviewQuestionRepository;
   private final RelatedQuestionLLMRepository relatedQuestionLLMRepository;
   private final LLMCallService llmCallService;
 
-  public QuestionRecommendationService(RelatedQuestionLLMRepository relatedQuestionLLMRepository,
+  public QuestionRecommendationService(InterviewQuestionRepository interviewQuestionRepository,
+      RelatedQuestionLLMRepository relatedQuestionLLMRepository,
       LLMCallService llmCallService) {
+    this.interviewQuestionRepository = interviewQuestionRepository;
     this.relatedQuestionLLMRepository = relatedQuestionLLMRepository;
     this.llmCallService = llmCallService;
   }
@@ -39,10 +46,17 @@ public class QuestionRecommendationService {
 
       ChatCompletionResult chatCompletionResult = llmCallService.generate(chatMessages);
 
-      recommendedQuestionPairDTOList.add(makeRecommendedQuestionPairDTO(dto, chatCompletionResult));
+      String relatedQuestionByLLMRecommendation = chatCompletionResult.getChoices().get(0)
+          .getMessage().getContent();
+
+      recommendedQuestionPairDTOList.add(
+          new RecommendedQuestionPairDTO(dto.getInterviewQuestionId(),
+              relatedQuestionByLLMRecommendation));
     }
 
-    //todo 생성된 연관질문들을 relatedQuestionLLMRepository을 이용해 저장해야 함.
+    for (RecommendedQuestionPairDTO dto : recommendedQuestionPairDTOList) {
+      saveRelatedQuestionLLM(dto);
+    }
 
     return recommendedQuestionPairDTOList;
   }
@@ -57,13 +71,12 @@ public class QuestionRecommendationService {
     return List.of(systemMessage, userMessage);
   }
 
-  private RecommendedQuestionPairDTO makeRecommendedQuestionPairDTO(TechQuestionAnswerPairDTO dto,
-      ChatCompletionResult chatCompletionResult) {
-    Integer interviewQuestionId = dto.getInterviewQuestionId();
+  private void saveRelatedQuestionLLM(RecommendedQuestionPairDTO dto) {
+    InterviewQuestion question = interviewQuestionRepository.findById(dto.getQuestionId())
+        .orElseThrow(
+            EntityNotFoundException::new);
 
-    String relatedQuestionByLLMRecommendation = chatCompletionResult.getChoices().get(0)
-        .getMessage().getContent();
-
-    return new RecommendedQuestionPairDTO(interviewQuestionId, relatedQuestionByLLMRecommendation);
+    relatedQuestionLLMRepository.save(
+        new RelatedQuestionLLM(dto.getRelatedQuestionByLLMRecommendation(), question));
   }
 }
